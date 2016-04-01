@@ -92,6 +92,19 @@ var userDataDir = path.join(os.tmpdir(), 'chromium_headless_user_data_directory'
     if (!hasFlag('v')) {
         chromiumFlags.push('--v=1');
     }
+    //added extra flags required
+    if (!hasFlag('disable-gpu')) {
+        chromiumFlags.push('--disable-gpu');
+    }
+    if (!hasFlag('start-maximized')) {
+        chromiumFlags.push('--start-maximized');
+    }
+    if (!hasFlag('use-fake-ui-for-media-stream')) {
+        chromiumFlags.push('--use-fake-ui-for-media-stream');
+    }
+    if (!hasFlag('use-fake-device-for-media-stream')) {
+        chromiumFlags.push('--use-fake-device-for-media-stream');
+    }
 
     function hasFlag(flagname) {
         return process.argv.some(function(flag) {
