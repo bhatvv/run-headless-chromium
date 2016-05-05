@@ -207,10 +207,26 @@ xvfb.start(function(err, xvfbProcess) {
             printJsConsoleMessage(log_message);
 
             if (log_severity == 'INFO') {
-                var completionMessage = /^All tests completed!(-?\d*)$/.exec(log_message);
+               //var completionMessage = /^All tests completed!(-?\d*)$/.exec(log_message);
+                var completionMessage = /^JSclient Error(-?\d*)$/.exec(log_message);
                 if (completionMessage) {
                     var exitCode = completionMessage[1] & 0xFF;
                     quitXvfbAndChromium(exitCode);
+                    console.log("Sending error to restart...");
+                    //throw new Error("Client Error");
+                    http.get('http://localhost:8081/xvfbError', function(res){
+                        var str = log_message;
+                        console.log('Response is ', res);
+
+                        res.on('data', function (chunk) {
+                               str += chunk;
+                         });
+
+                        res.on('end', function () {
+                             console.log(str);
+                        });
+
+                    });
                 }
             }
         } else {
